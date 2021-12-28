@@ -1,3 +1,46 @@
+#	Files to be ignored by Git
+#
+
+toolbox-angular-client1
+testBot
+clean
+current
+**/toolbox-datasource-prod-local.properties
+**/toolbox-mysql-datasource-prod-local.properties
+**/emails
+toolbox-angular-client
+LaunchConfigs
+**/node_modules
+**/node
+**/local.properties
+.nextbatch
+
+# Maven
+target/
+dependency-reduced-pom.xml
+**/*.releaseBackup
+release.properties
+
+# Eclipse IDE
+.settings/
+.project
+.classpath
+.factorypath
+.metadata
+.springBeans
+
+# Idea
 .idea/
-jthumbnail.iml
-target
+*.iml
+*.patch
+*.iws
+*.ipr
+classpath
+
+# Misc
+*.bak
+**/logs
+*.log
+**/*.out
+*.zip
+**/*.versionsBackup
