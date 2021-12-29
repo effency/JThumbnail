@@ -21,9 +21,12 @@
 
 package io.github.makbn.thumbnailer.thumbnailers;
 
-import io.github.makbn.thumbnailer.exception.FileDoesNotExistException;
-import io.github.makbn.thumbnailer.ThumbnailerException;
-import io.github.makbn.thumbnailer.util.ResizeImage;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,80 +34,79 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import io.github.makbn.thumbnailer.ThumbnailerException;
+import io.github.makbn.thumbnailer.exception.FileDoesNotExistException;
+import io.github.makbn.thumbnailer.model.ResizeParameters;
+import io.github.makbn.thumbnailer.util.ResizeImage;
 
 /**
  * Renders the first page of a PDF file into a thumbnail.
  */
 public class PDFBoxThumbnailer extends AbstractThumbnailer {
-    private static Logger mLog = LogManager.getLogger("PDFBoxThumbnailer");
-    @Override
-    public void generateThumbnail(File input, File output) throws IOException,
-            ThumbnailerException {
-        FileDoesNotExistException.check(input);
-        if (input.length() == 0)
-            throw new FileDoesNotExistException("File is empty");
-        FileUtils.deleteQuietly(output);
+  private static Logger mLog = LogManager.getLogger("PDFBoxThumbnailer");
 
-        PDDocument document = null;
+  @Override
+  public void generateThumbnail(File input, File output, ResizeParameters params)
+      throws IOException, ThumbnailerException {
+    FileDoesNotExistException.check(input);
+    if (input.length() == 0)
+      throw new FileDoesNotExistException("File is empty");
+    FileUtils.deleteQuietly(output);
+
+    PDDocument document = null;
+    try {
+      try {
+        document = PDDocument.load(input);
+      } catch (IOException e) {
+        mLog.error(e);
+        throw new ThumbnailerException("Could not load PDF File", e);
+      }
+
+      BufferedImage tmpImage = writeImageFirstPage(document);
+
+      if (tmpImage.getWidth() == params.getWidth()) {
+        ImageIO.write(tmpImage, "PNG", output);
+      } else {
+        ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight());
+        resizer.resizeMethod = params.getResizeMethod();
+        resizer.setInputImage(tmpImage);
+        resizer.writeOutput(output);
+      }
+    } finally {
+      if (document != null) {
         try {
-            try {
-                document = PDDocument.load(input);
-            } catch (IOException e) {
-                mLog.error(e);
-                throw new ThumbnailerException("Could not load PDF File", e);
-            }
-
-            BufferedImage tmpImage = writeImageFirstPage(document);
-
-            if (tmpImage.getWidth() == thumbWidth) {
-                ImageIO.write(tmpImage, "PNG", output);
-            } else {
-                ResizeImage resizer = new ResizeImage(thumbWidth, thumbHeight);
-                resizer.resizeMethod = ResizeImage.RESIZE_FIT_BOTH_DIMENSIONS;
-                resizer.setInputImage(tmpImage);
-                resizer.writeOutput(output);
-            }
-        } finally {
-            if (document != null) {
-                try {
-                    document.close();
-                } catch (IOException e) {
-                    mLog.error(e);
-                }
-            }
+          document.close();
+        } catch (IOException e) {
+          mLog.error(e);
         }
+      }
     }
+  }
 
-    /**
-     * Loosely based on the commandline-Tool PDFImageWriter
-     *
-     * @param document to generate image from first page
-     * @return generated image
-     * @throws IOException
-     */
-    private BufferedImage writeImageFirstPage(PDDocument document) throws IOException {
+  /**
+   * Loosely based on the commandline-Tool PDFImageWriter
+   *
+   * @param document
+   *          to generate image from first page
+   * @return generated image
+   * @throws IOException
+   */
+  private BufferedImage writeImageFirstPage(PDDocument document) throws IOException {
 
-        PDFRenderer pdfRenderer = new PDFRenderer(document);
-        BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
+    PDFRenderer pdfRenderer = new PDFRenderer(document);
+    BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
 
-        return bim;
-    }
+    return bim;
+  }
 
-    /**
-     * Get a List of accepted File Types.
-     * Only PDF Files are accepted.
-     *
-     * @return MIME-Types
-     */
-    public String[] getAcceptedMIMETypes() {
-        return new String[]{
-                "application/pdf"
-        };
-    }
-
+  /**
+   * Get a List of accepted File Types. Only PDF Files are accepted.
+   *
+   * @return MIME-Types
+   */
+  @Override
+  public String[] getAcceptedMIMETypes() {
+    return new String[] { "application/pdf" };
+  }
 
 }

@@ -21,48 +21,53 @@
 
 package io.github.makbn.thumbnailer.thumbnailers;
 
-
-import io.github.makbn.thumbnailer.ThumbnailerException;
-import io.github.makbn.thumbnailer.exception.UnsupportedInputFileFormatException;
-import io.github.makbn.thumbnailer.util.ResizeImage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import io.github.makbn.thumbnailer.ThumbnailerException;
+import io.github.makbn.thumbnailer.exception.UnsupportedInputFileFormatException;
+import io.github.makbn.thumbnailer.model.ResizeParameters;
+import io.github.makbn.thumbnailer.util.ResizeImage;
+
 /**
- * This class uses Java Image I/O (Java's internal Image Processing library) in order to resize images.
- * JAI can be extended with extra Readers, this Thumbnailer will use all available image readers.
+ * This class uses Java Image I/O (Java's internal Image Processing library) in order to resize images. JAI can be
+ * extended with extra Readers, this Thumbnailer will use all available image readers.
  * <p>
  * Depends:
- * <li>JAI Image I/O Tools (optional, for TIFF support) (@see http://java.net/projects/imageio-ext/ - licence not gpl compatible I suspect ...)
+ * <li>JAI Image I/O Tools (optional, for TIFF support) (@see http://java.net/projects/imageio-ext/ - licence not gpl
+ * compatible I suspect ...)
  */
 public class NativeImageThumbnailer extends AbstractThumbnailer {
 
-    private static Logger mLog = LogManager.getLogger("NativeImageThumbnailer");
+  private static Logger mLog = LogManager.getLogger("NativeImageThumbnailer");
 
-    public void generateThumbnail(File input, File output) throws IOException, ThumbnailerException {
-        ResizeImage resizer = new ResizeImage(thumbWidth, thumbHeight);
+  @Override
+  public void generateThumbnail(File input, File output, ResizeParameters params)
+      throws IOException, ThumbnailerException {
+    ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight());
 
-        try {
-            resizer.setInputImage(input);
-        } catch (UnsupportedInputFileFormatException e) {
-            mLog.error(e);
-            throw new ThumbnailerException("File format could not be interpreted as image", e);
-        }
-        resizer.writeOutput(output);
+    try {
+      resizer.setInputImage(input);
+    } catch (UnsupportedInputFileFormatException e) {
+      mLog.error(e);
+      throw new ThumbnailerException("File format could not be interpreted as image", e);
     }
+    resizer.writeOutput(output);
+  }
 
-    /**
-     * Get a List of accepted File Types.
-     * Normally, these are: bmp, jpg, wbmp, jpeg, png, gif
-     * The exact list may depend on the Java installation.
-     *
-     * @return MIME-Types
-     */
-    public String[] getAcceptedMIMETypes() {
-        return ImageIO.getReaderMIMETypes();
-    }
+  /**
+   * Get a List of accepted File Types. Normally, these are: bmp, jpg, wbmp, jpeg, png, gif The exact list may depend on
+   * the Java installation.
+   *
+   * @return MIME-Types
+   */
+  @Override
+  public String[] getAcceptedMIMETypes() {
+    return ImageIO.getReaderMIMETypes();
+  }
 }

@@ -24,6 +24,8 @@ package io.github.makbn.thumbnailer.util;
 
 import io.github.makbn.thumbnailer.ThumbnailerException;
 import io.github.makbn.thumbnailer.exception.UnsupportedInputFileFormatException;
+import io.github.makbn.thumbnailer.model.ResizeMethod;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,17 +38,6 @@ import java.io.InputStream;
 
 
 public class ResizeImage {
-
-    /**
-     * Scale input image so that width and height is equal (or smaller) to the output size.
-     * The other dimension will be smaller or equal than the output size.
-     */
-    public static final int RESIZE_FIT_BOTH_DIMENSIONS = 2;
-    /**
-     * Scale input image so that width or height is equal to the output size.
-     * The other dimension will be bigger or equal than the output size.
-     */
-    public static final int RESIZE_FIT_ONE_DIMENSION = 3;
     /**
      * Do not resize the image. Instead, crop the image (if smaller) or center it (if bigger)
      */
@@ -61,7 +52,7 @@ public class ResizeImage {
     public static final int ALLOW_SMALLER = 32;
     private static Logger mLog = LogManager.getLogger("ResizeImage");
 
-    public int resizeMethod = RESIZE_FIT_ONE_DIMENSION;
+    public ResizeMethod resizeMethod = ResizeMethod.OneDimension;
     public int extraOptions = DO_NOT_SCALE_UP;
     private BufferedImage inputImage;
     private boolean isProcessed = false;
@@ -123,14 +114,14 @@ public class ResizeImage {
         isProcessed = true;
     }
 
-    private void calcDimensions(int resizeMethod) {
+    private void calcDimensions(ResizeMethod resizeMethod) {
         double resizeRatio;
         switch (resizeMethod) {
-            case RESIZE_FIT_BOTH_DIMENSIONS:
+            case BothDimensions:
                 resizeRatio = Math.min(((double) thumbWidth) / imageWidth, ((double) thumbHeight) / imageHeight);
                 break;
 
-            case RESIZE_FIT_ONE_DIMENSION:
+            case OneDimension:
                 resizeRatio = Math.max(((double) thumbWidth) / imageWidth, ((double) thumbHeight) / imageHeight);
                 break;
             default:

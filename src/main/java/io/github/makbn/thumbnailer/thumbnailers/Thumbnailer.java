@@ -21,12 +21,12 @@
 
 package io.github.makbn.thumbnailer.thumbnailers;
 
-
-import io.github.makbn.thumbnailer.ThumbnailerException;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+
+import io.github.makbn.thumbnailer.ThumbnailerException;
+import io.github.makbn.thumbnailer.model.ResizeParameters;
 
 /**
  * This interface is implemented by any method suitable to create a thumbnail of a given File.
@@ -35,64 +35,63 @@ import java.io.IOException;
  */
 public interface Thumbnailer extends Closeable {
 
-    /**
-     * Generate a Thumbnail of the input file.
-     *
-     * @param input    Input file that should be processed
-     * @param output   File in which should be written
-     * @param mimeType MIME-Type of input file (null if unknown)
-     * @throws IOException          If file cannot be read/written
-     * @throws ThumbnailerException If the thumbnailing process failed.
-     */
-    void generateThumbnail(File input, File output, String mimeType) throws IOException, ThumbnailerException;
+  /**
+   * Generate a Thumbnail of the input file.
+   *
+   * @param input
+   *          Input file that should be processed
+   * @param output
+   *          File in which should be written
+   * @param mimeType
+   *          MIME-Type of input file (null if unknown)
+   * @throws IOException
+   *           If file cannot be read/written
+   * @throws ThumbnailerException
+   *           If the thumbnailing process failed.
+   */
+  void generateThumbnail(File input, File output, String mimeType, ResizeParameters params)
+      throws IOException, ThumbnailerException;
 
-    /**
-     * Generate a Thumbnail of the input file.
-     *
-     * @param input  Input file that should be processed
-     * @param output File in which should be written
-     * @throws IOException          If file cannot be read/written
-     * @throws ThumbnailerException If the thumbnailing process failed.
-     */
-    void generateThumbnail(File input, File output) throws IOException, ThumbnailerException;
+  /**
+   * Generate a Thumbnail of the input file.
+   *
+   * @param input
+   *          Input file that should be processed
+   * @param output
+   *          File in which should be written
+   * @throws IOException
+   *           If file cannot be read/written
+   * @throws ThumbnailerException
+   *           If the thumbnailing process failed.
+   */
+  void generateThumbnail(File input, File output, ResizeParameters params) throws IOException, ThumbnailerException;
 
-    /**
-     * This function will be called after all Thumbnails are generated.
-     * Note: This acts as a Deconstructor. Do not expect this object to work
-     * after calling this method.
-     *
-     * @throws IOException If some errors occured during finalising
-     */
-    void close() throws IOException;
+  /**
+   * This function will be called after all Thumbnails are generated. Note: This acts as a Deconstructor. Do not expect
+   * this object to work after calling this method.
+   *
+   * @throws IOException
+   *           If some errors occured during finalising
+   */
+  @Override
+  void close() throws IOException;
 
+  /**
+   * Set a new Thumbnail size. All following thumbnails will be generated in this size.
+   *
+   * @param width
+   *          Width in Pixel
+   * @param height
+   *          Height in Pixel
+   * @param imageResizeOptions
+   *          Options for ResizeImage (currently ignored)
+   */
+  void setImageSize(int imageResizeOptions);
 
-    /**
-     * Set a new Thumbnail size. All following thumbnails will be generated in this size.
-     *
-     * @param width              Width in Pixel
-     * @param height             Height in Pixel
-     * @param imageResizeOptions Options for ResizeImage (currently ignored)
-     */
-    void setImageSize(int width, int height, int imageResizeOptions);
-
-    /**
-     * Get the currently set Image Width of this Thumbnailer.
-     *
-     * @return image width of created thumbnails.
-     */
-    int getCurrentImageWidth();
-
-    /**
-     * Get the currently set Image Height of this Thumbnailer.
-     *
-     * @return image height of created thumbnails.
-     */
-    int getCurrentImageHeight();
-
-    /**
-     * Get a list of all MIME Types that this Thumbnailer is ready to process.
-     *
-     * @return List of MIME Types. If null, all Files may be passed to this Thumbnailer.
-     */
-    String[] getAcceptedMIMETypes();
+  /**
+   * Get a list of all MIME Types that this Thumbnailer is ready to process.
+   *
+   * @return List of MIME Types. If null, all Files may be passed to this Thumbnailer.
+   */
+  String[] getAcceptedMIMETypes();
 }
