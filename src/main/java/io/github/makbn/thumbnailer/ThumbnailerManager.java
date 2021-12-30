@@ -122,6 +122,7 @@ public class ThumbnailerManager implements Thumbnailer {
     File output;
 
     String name = FilenameUtils.getBaseName(input.getName()) + "_thumb";
+    // String name = FilenameUtils.getBaseName(input.getName()) + "_thumb_" + System.currentTimeMillis();
 
     name = name + "." + ext;
 

@@ -67,7 +67,7 @@ public class PDFBoxThumbnailer extends AbstractThumbnailer {
       if (tmpImage.getWidth() == params.getWidth()) {
         ImageIO.write(tmpImage, "PNG", output);
       } else {
-        ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight());
+        ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight(), params.getResizeMethod());
         resizer.resizeMethod = params.getResizeMethod();
         resizer.setInputImage(tmpImage);
         resizer.writeOutput(output);

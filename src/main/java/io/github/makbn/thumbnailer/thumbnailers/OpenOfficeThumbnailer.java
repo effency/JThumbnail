@@ -73,7 +73,7 @@ public class OpenOfficeThumbnailer extends AbstractThumbnailer {
 
         in = new BufferedInputStream(zipFile.getInputStream(entry));
 
-        ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight());
+        ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight(), params.getResizeMethod());
         resizer.setInputImage(in);
         resizer.writeOutput(output);
 

@@ -49,7 +49,7 @@ public class NativeImageThumbnailer extends AbstractThumbnailer {
   @Override
   public void generateThumbnail(File input, File output, ResizeParameters params)
       throws IOException, ThumbnailerException {
-    ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight());
+    ResizeImage resizer = new ResizeImage(params.getWidth(), params.getHeight(), params.getResizeMethod());
 
     try {
       resizer.setInputImage(input);
