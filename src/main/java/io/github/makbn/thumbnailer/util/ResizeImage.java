@@ -159,8 +159,8 @@ public class ResizeImage {
     Graphics2D graphics2D = outputImage.createGraphics();
 
     // Fill background with white color
-    graphics2D.setBackground(Color.WHITE);
-    graphics2D.setPaint(Color.WHITE);
+    graphics2D.setBackground(new Color(0, 0, 0, 0));
+    graphics2D.setPaint(new Color(0, 0, 0, 0));
     graphics2D.fillRect(0, 0, thumbWidth, thumbHeight);
 
     // Enable smooth, high-quality resampling
