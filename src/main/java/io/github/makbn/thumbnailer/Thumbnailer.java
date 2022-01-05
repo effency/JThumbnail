@@ -127,7 +127,7 @@ public class Thumbnailer {
               File out = createThumbnail(e.getKey().getFile(), e.getKey().getThumbExt(), e.getKey().getParams());
               e.getValue().onThumbnailReady(e.getKey().getHash(), out);
               return true;
-            } catch (IOException | NullPointerException | ThumbnailerException exp) {
+            } catch (Throwable exp) {
               mLog.error(exp);
               e.getValue().onThumbnailFailed(e.getKey().getHash(), exp.getMessage(), 100);
               return true;
