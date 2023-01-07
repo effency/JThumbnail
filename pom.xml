@@ -4,11 +4,28 @@
 
   <groupId>io.github.makbn</groupId>
   <artifactId>jthumbnail</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
 
   <properties>
     <maven.javadoc.skip>true</maven.javadoc.skip>
+    <java.version>17</java.version>
+
+    <poi.version>5.0.0</poi.version>
+    <commons-io.version>2.8.0</commons-io.version>
+    <commons-cli.version>1.4</commons-cli.version>
+    <log4j.version>1.2.17</log4j.version>
+    <rdf2go.api.version>5.0.0</rdf2go.api.version>
+    <jodconverter.version>4.4.2</jodconverter.version>
+    <pdfbox.version>2.0.24</pdfbox.version>
+    <slf4j.version>1.7.30</slf4j.version>
+    <bytedeco-javacv.version>1.5.5</bytedeco-javacv.version>
+    <bytedeco-opencv.version>4.5.1-1.5.5</bytedeco-opencv.version>
+    <bytedeco-opencv-platform.version>4.0.1-1.4.4</bytedeco-opencv-platform.version>
+    <thumbnailator.version>0.4.14</thumbnailator.version>
+    <mp3agic.Version>0.9.1</mp3agic.Version>
+    <tika.version>1.26</tika.version>
   </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -29,8 +46,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>
@@ -47,47 +64,47 @@
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
-      <version>5.0.0</version>
+      <version>${poi.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-scratchpad</artifactId>
-      <version>5.0.0</version>
+      <version>${poi.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.8.0</version>
+      <version>${commons-io.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/log4j/log4j -->
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
+      <version>${log4j.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.semweb4j/rdf2go.api -->
     <dependency>
       <groupId>org.semweb4j</groupId>
       <artifactId>rdf2go.api</artifactId>
-      <version>5.0.0</version>
+      <version>${rdf2go.api.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.jodconverter/jodconverter-core -->
     <dependency>
       <groupId>org.jodconverter</groupId>
       <artifactId>jodconverter-core</artifactId>
-      <version>4.4.2</version>
+      <version>${jodconverter.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.jodconverter/jodconverter-local -->
     <dependency>
       <groupId>org.jodconverter</groupId>
       <artifactId>jodconverter-local</artifactId>
-      <version>4.4.2</version>
+      <version>${jodconverter.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.jodconverter/jodconverter-online -->
@@ -101,21 +118,21 @@
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
-      <version>2.0.24</version>
+      <version>${pdfbox.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4j.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -126,47 +143,47 @@
     <dependency>
       <groupId>org.bytedeco</groupId>
       <artifactId>javacv</artifactId>
-      <version>1.5.5</version>
+      <version>${bytedeco-javacv.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.bytedeco/opencv -->
     <dependency>
       <groupId>org.bytedeco</groupId>
       <artifactId>opencv</artifactId>
-      <version>4.5.1-1.5.5</version>
-    </dependency>
-
-    <dependency>
-      <groupId>net.coobird</groupId>
-      <artifactId>thumbnailator</artifactId>
-      <version>0.4.14</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.mpatric</groupId>
-      <artifactId>mp3agic</artifactId>
-      <version>0.9.1</version>
+      <version>${bytedeco-opencv.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.bytedeco.javacpp-presets/opencv-platform -->
     <dependency>
       <groupId>org.bytedeco.javacpp-presets</groupId>
       <artifactId>opencv-platform</artifactId>
-      <version>4.0.1-1.4.4</version>
+      <version>${bytedeco-opencv-platform.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.coobird</groupId>
+      <artifactId>thumbnailator</artifactId>
+      <version>${thumbnailator.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.mpatric</groupId>
+      <artifactId>mp3agic</artifactId>
+      <version>${mp3agic.Version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
     <dependency>
       <groupId>commons-cli</groupId>
       <artifactId>commons-cli</artifactId>
-      <version>1.4</version>
+      <version>${commons-cli.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
     <dependency>
       <groupId>org.apache.tika</groupId>
       <artifactId>tika-core</artifactId>
-      <version>1.26</version>
+      <version>${tika.version}</version>
     </dependency>
   </dependencies>
 </project>
