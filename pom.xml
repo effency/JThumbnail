@@ -4,7 +4,7 @@
 
   <groupId>io.github.makbn</groupId>
   <artifactId>jthumbnail</artifactId>
-  <version>3.0-SNAPSHOT</version>
+  <version>3.0</version>
 
   <properties>
     <maven.javadoc.skip>true</maven.javadoc.skip>
@@ -56,7 +56,7 @@
 
   <scm>
     <developerConnection>scm:git:https://github.com/effency/JThumbnail.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>jthumbnail-3.0</tag>
   </scm>
 
   <dependencies>
