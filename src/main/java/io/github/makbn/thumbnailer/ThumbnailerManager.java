@@ -27,7 +27,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import io.github.makbn.thumbnailer.exception.FileDoesNotExistException;
 import io.github.makbn.thumbnailer.model.ResizeParameters;
@@ -69,7 +70,7 @@ public class ThumbnailerManager implements Thumbnailer {
   /**
    * The logger for this class
    */
-  private static final Logger mLog = Logger.getLogger(ThumbnailerManager.class);
+  private static final Logger mLog = LogManager.getLogger(ThumbnailerManager.class);
 
   /**
    * Thumbnailers per MIME-Type they accept (ALL_MIME_WILDCARD for all)
@@ -250,7 +251,7 @@ public class ThumbnailerManager implements Thumbnailer {
     // MIME might be known already (in case of recursive thumbnail managers)
     if (mimeType == null) {
       mimeType = mimeTypeDetector.getMimeType(input);
-      mLog.debug("Detected Mime-Typ: " + mimeType);
+      mLog.debug("Detected Mime-Typ: {}", mimeType);
     }
 
     if (mimeType != null)
@@ -312,8 +313,7 @@ public class ThumbnailerManager implements Thumbnailer {
         return true;
       } catch (ThumbnailerException e) {
         // This Thumbnailer apparently wasn't suitable, so try next
-        mLog.warn("Warning: " + thumbnailer.getClass().getName() + " could not handle the file " + input.getName()
-            + " (trying next)", e);
+        mLog.warn("Warning: {} could not handle the file {} (trying next)", thumbnailer.getClass().getName(), input.getName(), e);
       }
     }
     return false;

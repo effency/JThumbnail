@@ -29,7 +29,7 @@ public class ThumbnailReadyObserver implements ImageObserver {
 
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
 
-        mLog.info("Observer debug info: imageUpdate: " + infoflags);
+        mLog.info("Observer debug info: imageUpdate: {}", infoflags);
         if ((infoflags & ImageObserver.ALLBITS) > 0) {
             ready = true;
             mLog.info("Observer says: Now ready!");

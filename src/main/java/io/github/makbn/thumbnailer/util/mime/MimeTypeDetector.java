@@ -22,7 +22,8 @@
 package io.github.makbn.thumbnailer.util.mime;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.tika.Tika;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -43,7 +44,7 @@ import java.util.Map;
  */
 public class MimeTypeDetector {
 
-    private static final Logger mLog = Logger.getLogger(MimeTypeDetector.class);
+    private static final Logger mLog = LogManager.getLogger(MimeTypeDetector.class);
     private final List<MimeTypeIdentifier> extraIdentifiers;
     private final static Map<String, String> outputThumbnailExtensionCache = new HashMap<>();
     private final Map<String, List<String>> extensionsCache = new HashMap<String, List<String>>();
@@ -119,7 +120,7 @@ public class MimeTypeDetector {
         for (MimeTypeIdentifier identifier : extraIdentifiers)
             mimeType = identifier.identify(mimeType, null, file);
 
-        mLog.info("Detected MIME-Type of " + file.getName() + " is " + mimeType);
+        mLog.info("Detected MIME-Type of {} is {}", file.getName(), mimeType);
         return mimeType;
     }
 
