@@ -25,9 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import io.github.makbn.thumbnailer.exception.FileDoesNotExistException;
 import io.github.makbn.thumbnailer.listener.ThumbnailListener;
 import io.github.makbn.thumbnailer.model.ResizeParameters;
@@ -45,13 +42,14 @@ import io.github.makbn.thumbnailer.thumbnailers.OpenOfficeThumbnailer;
 import io.github.makbn.thumbnailer.thumbnailers.PDFBoxThumbnailer;
 import io.github.makbn.thumbnailer.thumbnailers.TextThumbnailer;
 import io.github.makbn.thumbnailer.util.mime.MimeTypeDetector;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Created by Mehdi Akbarian-Rastaghi on 9/25/18
  */
+@Log4j2
 public class Thumbnailer {
 
-  private static Logger mLog = LogManager.getLogger("Thumbnailer");
   private static ThumbnailerManager thumbnailer;
 
   private static String defaultOutputDir = AppSettings.TEMP_DIR;
@@ -61,11 +59,13 @@ public class Thumbnailer {
   private static Runnable taskRunner;
 
   public static void start() throws FileDoesNotExistException {
-    if (files == null)
+    if (files == null) {
       files = new ConcurrentHashMap<>();
+    }
 
-    if (thumbnailer != null)
+    if (thumbnailer != null) {
       return;
+    }
     thumbnailer = new ThumbnailerManager();
     loadExistingThumbnailers();
     setParameters();
@@ -102,11 +102,11 @@ public class Thumbnailer {
     synchronized (files) {
 
       files.put(candidate, listener);
-      mLog.info("file added to queue!");
+      log.info("file added to queue!");
       if (state == ThumbnailState.ideal) {
         runTasks();
       } else {
-        mLog.info("task is running!");
+        log.info("task is running!");
       }
     }
 
@@ -117,7 +117,7 @@ public class Thumbnailer {
       if (state == ThumbnailState.running) {
         return;
       }
-      mLog.info("task started!");
+      log.info("task started!");
       state = ThumbnailState.running;
       taskRunner = () -> {
         while (!files.isEmpty()) {
@@ -128,13 +128,13 @@ public class Thumbnailer {
               e.getValue().onThumbnailReady(e.getKey().getHash(), out);
               return true;
             } catch (Throwable exp) {
-              mLog.error(exp);
+              log.error(exp);
               e.getValue().onThumbnailFailed(e.getKey().getHash(), exp.getMessage(), 100);
               return true;
             }
           });
         }
-        mLog.info("task ended!");
+        log.info("task ended!");
         state = ThumbnailState.ideal;
       };
       Thread taskThread = new Thread(taskRunner);
@@ -164,7 +164,7 @@ public class Thumbnailer {
     thumbnailer.registerThumbnailer(new ImageThumbnailer());
     thumbnailer.registerThumbnailer(new TextThumbnailer());
 
-    mLog.info("Thumbnailers loaded!");
+    log.info("Thumbnailers loaded!");
   }
 
   private enum ThumbnailState {

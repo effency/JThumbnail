@@ -10,14 +10,14 @@
     <maven.javadoc.skip>true</maven.javadoc.skip>
     <java.version>17</java.version>
 
+    <lombok.version>1.18.36</lombok.version>
     <poi.version>5.0.0</poi.version>
     <commons-io.version>2.8.0</commons-io.version>
     <commons-cli.version>1.4</commons-cli.version>
-    <log4j.version>1.2.17</log4j.version>
     <rdf2go.api.version>5.0.0</rdf2go.api.version>
     <jodconverter.version>4.4.2</jodconverter.version>
     <pdfbox.version>2.0.24</pdfbox.version>
-    <slf4j.version>1.7.30</slf4j.version>
+    <log4j.version>2.24.1</log4j.version>
     <bytedeco-javacv.version>1.5.5</bytedeco-javacv.version>
     <bytedeco-opencv.version>4.5.1-1.5.5</bytedeco-opencv.version>
     <bytedeco-opencv-platform.version>4.0.1-1.4.4</bytedeco-opencv-platform.version>
@@ -60,6 +60,11 @@
   </scm>
 
   <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -114,25 +119,6 @@
       <version>${pdfbox.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.24.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-to-slf4j</artifactId>
-      <version>2.24.1</version>
-    </dependency>
-
     <dependency>
       <groupId>org.bytedeco</groupId>
       <artifactId>javacv</artifactId>
@@ -161,12 +147,12 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.24.1</version>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.24.1</version>
+      <version>${log4j.version}</version>
     </dependency>
 
     <dependency>
